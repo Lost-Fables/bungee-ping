@@ -4,9 +4,9 @@ import com.google.common.io.ByteStreams;
 import com.xdefcon.bungeeping.bstats.Metrics;
 import com.xdefcon.bungeeping.commands.PingCommand;
 import com.xdefcon.bungeeping.commands.ReloadCommand;
-import com.xdefcon.bungeeping.listeners.TabCompleteListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -23,15 +23,14 @@ public class BungeePing extends Plugin {
     public void onEnable() {
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new PingCommand(this));
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new ReloadCommand(this));
-        ProxyServer.getInstance().getPluginManager().registerListener(this, new TabCompleteListener(this));
         this.loadConfig();
         new Metrics(this);
     }
 
     public void reload() {
-        ProxyServer.getInstance().getConsole().sendMessage(ChatColor.GREEN + "Reloading the plugin...");
+        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "Reloading the plugin..."));
         this.loadConfig();
-        ProxyServer.getInstance().getConsole().sendMessage(ChatColor.GREEN + "Plugin reloaded.");
+        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "Plugin reloaded."));
     }
 
     private void loadConfig() {

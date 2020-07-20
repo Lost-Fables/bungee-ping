@@ -13,6 +13,7 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -150,7 +151,7 @@ public class Metrics {
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
-        gzip.write(str.getBytes("UTF-8"));
+        gzip.write(str.getBytes(StandardCharsets.UTF_8));
         gzip.close();
         return outputStream.toByteArray();
     }
@@ -226,7 +227,7 @@ public class Metrics {
     private JsonObject getServerData() {
         // Minecraft specific data
         int playerAmount = plugin.getProxy().getOnlineCount();
-        playerAmount = playerAmount > 500 ? 500 : playerAmount;
+        playerAmount = Math.min(playerAmount, 500);
         int onlineMode = plugin.getProxy().getConfig().isOnlineMode() ? 1 : 0;
         String bungeecordVersion = plugin.getProxy().getVersion();
         int managedServers = plugin.getProxy().getServers().size();
